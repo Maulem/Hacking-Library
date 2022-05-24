@@ -34,6 +34,52 @@ or try to guess the OS of the hosts with:
 sudo arp-fingerprint -l
 ```
 
+## TCPDUMP
+
+TCPDUMP is a network analysis tool, it can be used with ARP Spoofing man in the middle for example to analyze the traffic between router and victim.
+
+- Base command:
+
+```console
+tcpdump -i eth0
+```
+
+#### Flags
+
+Use the flags after the base command
+
+- Traffic going in/out some IP:
+
+> host {IP_ADDRESS}
+
+- Filter traffic by entry or exit:
+
+> src {IP_ADDRESS}
+
+> dst {IP_ADDRESS}
+
+- Filter traffic by port:
+
+> port {PORT_NUM}
+
+> portrange {PORT_START}-{PORT_END}
+
+- Filter by package size:
+
+> less {SIZE}
+
+> greater {SIZE}
+
+> <= {SIZE}
+
+- Save to file:
+
+> -w {FILE_NAME}
+
+- Read file:
+
+> -r {FILE_NAME}
+
 # Attack Tools
 
 ## ARP Spoofing
