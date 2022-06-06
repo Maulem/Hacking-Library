@@ -10,6 +10,14 @@ Remember, this is only a guide, use the knowledge here wisely and at your own ri
 
 Have fun!
 
+# Analysis Sites
+
+## IPOK
+
+A colection of online tools for analysis and diagnoses in domains, dns, email, network and servers.
+
+https://ipok.com.br/
+
 # Analysis Tools 
 
 ## ARP
@@ -132,6 +140,16 @@ Example:
 nmap 192.168.1.*
 ```
 
+#### Ports state
+
+The ports can be classified in 3 states:
+
+- **Open** - Port is open accepting TCP conections or UDP packages.
+
+- **Closed** - Port is closed but answers to Nmap packages, but there's no application listening to it.
+
+- **Filtered** - Nmap doesn't know if is open or closed, because there's a package filter that don't let Nmap packages to reach the port.
+
 #### Flags
 
 - Port selection:
@@ -162,9 +180,13 @@ nmap 192.168.1.*
 
 > -Pn
 
-- Display open ports:
+- Display open TCP ports:
 
 > -sT
+
+- Display open UCP ports:
+
+> -sU
 
 - Display target system infos:
 
@@ -182,7 +204,7 @@ nmap 192.168.1.*
 
 > --script vuln
 
-- Find malwares:
+- Find malwares or backdoors:
 
 > --script malware
 
@@ -193,11 +215,71 @@ Telnet can be used to get the name and version of a process running in a specifi
 ```console
 telnet {IP_ADDRESS} {PORT}
 ```
+
 Example:
 
 ```console
 telnet 192.168.1.1 22
 ```
+
+## Nikto
+
+Nikto is used to find vulnerabilities on web servers.
+
+```console
+nikto -host {IP_ADDRESS_OR_WEBSITE_DOMAIN} {OPTIONS}
+```
+
+Example:
+
+```console
+nikto -h 192.168.15.1 -Display 1
+```
+
+#### Options
+
+- Show redirects:
+
+> -Display 1
+
+- Show received cookies:
+
+> -Display 2
+
+- Show all answers:
+
+> -Display 3
+
+- Show URLs that need autentication:
+
+> -Display 4
+
+- Show debugging log:
+
+> -Display D
+
+- Show more detailed infos:
+
+> -Display V
+
+- Tests that Nikto will use against the target:
+
+> -Tuning
+
+## NSLookup
+
+Shows DNS servers of some website domain
+
+```console
+nslookup {WEBSITE_DOMAIN}
+```
+
+Example:
+
+```console
+nslookup www.ietf,org
+```
+
 
 # Attack Tools
 
