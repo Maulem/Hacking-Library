@@ -80,6 +80,46 @@ Use the flags after the base command
 
 > -r {FILE_NAME}
 
+## Wireshark
+
+Wireshark is mostly used as an Sniffing tool to analise protocols when the computer send or receive packages.
+
+#### Important Filters
+
+> ip.addr==192.168.0.1
+
+> ip.src==192.168.0.1
+
+> ip.dst==192.168.0.1
+
+> tcp.port==xxx
+
+> tcp contains www.google.com
+
+> udp or tcp
+
+> dns
+
+> http
+
+- Filters all HTTP GET and POST requests. It can show the most accessed webpages:
+
+> http.request
+
+> http contains .doc
+
+> http.host
+
+> http.server
+
+- Displays all packets that contain the word ‘traffic’. Excellent when searching on a specific string or user ID:
+
+> frame contains traffic 
+
+- Service that provides mutual authentication between users and services in a network. Useful for finding logins:
+
+> kerberos
+
 # Attack Tools
 
 ## ARP Spoofing
