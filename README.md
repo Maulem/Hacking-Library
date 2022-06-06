@@ -277,9 +277,40 @@ nslookup {WEBSITE_DOMAIN}
 Example:
 
 ```console
-nslookup www.ietf,org
+nslookup www.google.com
 ```
 
+## Webtech
+
+Show tecnologies used in a webserver.
+
+```console
+./.local/bin/webtech -u {WEBSITE_DOMAIN}
+```
+
+Example:
+
+```console
+./.local/bin/webtech -u http://www.google.com
+```
+
+#### How to install
+
+> pip install webtech
+
+## WAF
+
+Checks for WAF (Web Application FIrewall):
+
+```console
+wafw00f -a -v {WEBSITE_DOMAIN}
+```
+
+Example:
+
+```console
+wafw00f -a -v http://www.google.com
+```
 
 # Attack Tools
 
