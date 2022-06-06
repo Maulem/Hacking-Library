@@ -120,6 +120,85 @@ Wireshark is mostly used as an Sniffing tool to analise protocols when the compu
 
 > kerberos
 
+## Nmap
+
+```console
+nmap {IP_ADDRESS}
+```
+
+Example:
+
+```console
+nmap 192.168.1.*
+```
+
+#### Flags
+
+- Port selection:
+
+> -p 22,80-85,443,8000-8005,8080-8085
+
+- Know port selection:
+
+> -p ssh
+
+- Agressive scan:
+
+> -T5
+
+- Discreet scan:
+
+> -T0
+
+- Save to file:
+
+> -oN {FILENAME}
+
+- Randomizes the port scan order by default to make detection slightly harder:
+
+> -r
+
+- Skip the ping test and simply scan every target host provided (helps finding hidden hosts):
+
+> -Pn
+
+- Display open ports:
+
+> -sT
+
+- Display target system infos:
+
+> -A
+
+- Display target OS:
+
+> -O
+
+- Display version of services running in the ports:
+
+> -sV
+
+- Find vulnerabilities:
+
+> --script vuln
+
+- Find malwares:
+
+> --script malware
+
+## Telnet
+
+Telnet can be used to get the name and version of a process running in a specific port
+
+```console
+telnet {IP_ADDRESS} {PORT}
+```
+Example:
+
+```console
+telnet 192.168.1.1 22
+```
+
 # Attack Tools
 
 ## ARP Spoofing
