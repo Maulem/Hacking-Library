@@ -10,7 +10,7 @@ Remember, this is only a guide, use the knowledge here wisely and at your own ri
 
 Have fun!
 
-# Analysis Sites
+# Analysis Websites
 
 ## IPOK
 
@@ -24,7 +24,7 @@ https://ipok.com.br/
 
 The ARP protocol (Address Resolution Protocol) associates every MAC address with an IP address in the local network. The way this works is with a broadcast in the local network, asking every host about their pairs IP/MAC. Every time a broadcast occurs the host sends his own pair IP/MAC besides asking other hosts their pairs, so it can be saved into a cache in every machine.
 
-You can check the cache in your own machine with:
+You can check the ARP cache in your own machine with:
 
 ```console
 arp -a
@@ -44,7 +44,7 @@ sudo arp-fingerprint -l
 
 ## TCPDUMP
 
-TCPDUMP is a network analysis tool, it can be used with ARP Spoofing man in the middle for example to analyze the traffic between router and victim.
+TCPDUMP is a network analysis tool, it can be used for example with ARP Spoofing man in the middle, to analyze the traffic between host and victim.
 
 - Base command:
 
@@ -90,15 +90,23 @@ Use the flags after the base command
 
 ## Wireshark
 
-Wireshark is mostly used as an Sniffing tool to analise protocols when the computer send or receive packages.
+Wireshark is mostly used as an Sniffing tool to analise protocols when the computer send or receive packages, it can also be used with a Man in the Middle attack to analyze the traffic between host and victim.
 
 #### Important Filters
 
+- Filters packages sent or received by an IP address. Useful for analizing an especific computer:
+
 > ip.addr==192.168.0.1
+
+- Filters only the packages that this IP has sent:
 
 > ip.src==192.168.0.1
 
+- Filters only the packages that this IP will receive:
+
 > ip.dst==192.168.0.1
+
+- Filters tcp packages by an especific port. Useful when filtering the communication of an specific service: 
 
 > tcp.port==xxx
 
