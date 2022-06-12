@@ -16,9 +16,101 @@ Have fun!
 
 A colection of online tools for analysis and diagnoses in domains, dns, email, network and servers.
 
-https://ipok.com.br/
+- https://ipok.com.br/
 
-# Analysis Tools 
+## Have I Been Pwned
+
+A site that checks if your email or phone is in a data breach.
+
+- https://haveibeenpwned.com/
+
+## How secure is my password?
+
+A site that displays how secure is a password measured in time to crack it.
+
+- https://www.security.org/how-secure-is-my-password/
+
+# Wordlist creation
+
+List of scripts to help creating wordlists.
+
+## CeWL (Custom Word List generator) 
+
+CeWL is a ruby app which spiders a given URL, up to a specified depth, and returns a list of words which can then be used for password crackers such as John the Ripper.
+
+```console
+cewl -w {FILE_TO_WRITE_PASSWORD} -d {DEPTH_NUM} -m {MINIMUM_PASSWORD_LENGTH} {IP_ADDRESS}
+```
+
+Example:
+
+```console
+cewl -w passwords.txt -d 2 -m 5 192.168.15.99
+```
+
+#### How to install
+
+```console
+sudo apt install cewl
+```
+
+#### Flags
+
+- Let the spyder visit other sites:
+
+> -o
+
+- Lowercase all parsed words
+
+> --lowercase
+
+- Include email address:
+
+> -e
+
+- Output file for email addresses:
+
+> --email_file {FILE_NAME}
+
+- Show the count for each word found:
+
+> -c
+
+## Crunch
+
+The wordlists are created through combination and permutation of a set of characters. You can determine the amount of characters and list size.
+
+```console
+crunch {MIN_WORD_SIZE} {MAX_WORD_SIZE} {CHARACTER_LIST} > {FILE_TO_SAVE_WORDLIST}
+```
+
+Example:
+
+```console
+crunch 3 4 qwerty123 > wordlist.txt
+```
+
+#### How to install
+
+```console
+sudo apt install crunch
+```
+
+## Cupp
+
+Cupp is an interactive program that permutate the info gathered to create a wordlist.
+
+```console
+python3 cupp.py -i
+```
+
+#### How to install
+
+Download the cupp repository at:
+
+- https://github.com/Mebus/cupp
+
+# Analysis Tools
 
 ## ARP
 
@@ -94,6 +186,8 @@ Wireshark is mostly used as an Sniffing tool to analise protocols when the compu
 
 #### Important Filters
 
+Note that what is written here are only examples and not all the possibilities. So you can combine them and create your own filters based on your needs.  
+
 - Filters packages sent or received by an IP address. Useful for analizing an especific computer:
 
 > ip.addr==192.168.0.1
@@ -110,11 +204,19 @@ Wireshark is mostly used as an Sniffing tool to analise protocols when the compu
 
 > tcp.port==xxx
 
-> tcp contains www.google.com
+- Filters tcp packages that cointains the term "google.com":
 
-> udp or tcp
+> tcp contains google.com
+
+- Filters by udp protocol or tcp protocol: 
+
+> udp or 
+
+- Filters all dns packages:
 
 > dns
+
+- Filters all http packages:
 
 > http
 
@@ -122,9 +224,15 @@ Wireshark is mostly used as an Sniffing tool to analise protocols when the compu
 
 > http.request
 
+- Filter http packages that contain the term .doc
+
 > http contains .doc
 
+- Filter http packages sent by the host:
+
 > http.host
+
+- Filter http packages sent by the server:
 
 > http.server
 
@@ -250,11 +358,11 @@ nikto -h 192.168.15.1 -Display 1
 
 > -Display 1
 
-- Show received cookies:
+- Show cookies received:
 
 > -Display 2
 
-- Show all answers:
+- Show all 200/OK responses:
 
 > -Display 3
 
@@ -270,9 +378,67 @@ nikto -h 192.168.15.1 -Display 1
 
 > -Display V
 
-- Tests that Nikto will use against the target:
+##### Scan tuning for Nikto:
 
-> -Tuning
+- File upload:
+
+> -Tuning 0
+
+- Interesting File / Seen in logs:
+
+> -Tuning 1
+
+- Misconfiguration / Default File:
+
+> -Tuning 2
+
+- Information Disclosure:
+
+> -Tuning 3
+
+- Injection (XSS/Script/HTML):
+
+> -Tuning 4
+
+- Remote File Retrieval - Inside Web Root:
+
+> -Tuning 5
+
+- DOS (Denial Of Service):
+
+> -Tuning 6
+
+- Remote File Retrieval - Server Wide:
+
+> -Tuning 7
+
+- Remote shell / Command execution:
+
+> -Tuning 8
+
+- SQL injection:
+
+> -Tuning 9
+
+- Authentication Bypass:
+
+> -Tuning a
+
+- Software identification:
+
+> -Tuning b
+
+- Remote font inclusion:
+
+> -Tuning c
+
+- WebService:
+
+> -Tuning d
+
+- Administrative Console:
+
+> -Tuning e
 
 ## NSLookup
 
@@ -425,3 +591,59 @@ sudo arpspoof -i eth0 -t 192.168.0.104 192.168.0.1
 ```
 
 and with this we have a man in the middle set.
+
+## Hydra Password Cracking
+
+Hydra is a parallelized login cracker which supports numerous protocols to attack. It is very fast and flexible, and new modules are easy to add.
+
+```console
+hydra -L {USER_LIST_FILE} -P {PASSWORD_LIST_FILE} {IP_ADDRESS} {PROTOCOL}
+```
+
+or
+
+```console
+hydra -l {USERNAME} -p {PASSWORD} {IP_ADDRESS} {PROTOCOL}
+```
+
+Example:
+
+```console
+hydra -l admin -P passwords.txt 192.168.15.99 ssh
+```
+
+#### Flags
+
+- Restore a previous aborted/crashed session:
+
+> -R
+
+- Ignore an existing restore file (don't wait 10 seconds):
+
+> -I 
+
+- Perform an SSL connect:
+
+> -S
+
+- If the service is on a different default port, define it here:
+
+> -s {PORT}
+
+- Login with LOGIN name, or load several logins from FILE:
+
+> -l {LOGIN}
+
+> -L {FILE}
+
+- Try password PASS, or load several passwords from FILE
+
+> -p {PASS} 
+
+> -P {FILE}
+
+#### How to install
+
+```console
+sudo apt install hydra
+```
