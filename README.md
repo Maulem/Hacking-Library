@@ -30,6 +30,43 @@ A site that displays how secure is a password measured in time to crack it.
 
 - https://www.security.org/how-secure-is-my-password/
 
+# Cryptography
+
+## Steghide
+
+Steghide is steganography program which hides bits of a data file in some of the least significant bits of another file in such a way that the existence of the data file is not visible and cannot be proven.
+
+It is designed to be portable and configurable and features hiding data in bmp, jpeg, wav and au files, blowfish encryption, MD5 hashing of passphrases to blowfish keys, and pseudo-random distribution of hidden bits in the container data.
+
+**Hiding a file in an image:**
+
+```console
+steghide embed -cf {IMAGE} -ef {FILE_NAME}
+```
+
+Example:
+
+```console
+steghide embed -cf image.jpg -ef secret.txt
+```
+
+**Recovering text in an image:**
+
+```console
+steghide extract -sf {IMAGE}
+```
+
+Example:
+
+```console
+steghide extract -sf image.jpg
+```
+
+#### How to install
+
+sudo apt install steghide
+
+
 # Wordlist creation
 
 List of scripts to help creating wordlists.
@@ -647,3 +684,9 @@ hydra -l admin -P passwords.txt 192.168.15.99 ssh
 ```console
 sudo apt install hydra
 ```
+
+## Burp Suite
+
+## SAM Cracking
+
+Windows password cracking
