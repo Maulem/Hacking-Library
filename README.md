@@ -66,6 +66,22 @@ steghide extract -sf image.jpg
 
 sudo apt install steghide
 
+# Hash Cracking
+
+## Websites for crashing Hashs
+
+- https://www.onlinehashcrack.com/ 
+
+- https://hashes.com/
+
+## Ophcrack
+
+Password cracker designed for all operating systems that specializes in Windows password cracking
+
+## John the Ripper
+
+## Hashcat
+
 
 # Wordlist creation
 
@@ -739,8 +755,10 @@ The NT Hash (or NTLM in some cracking websites) is newer and more difficult to c
 
 There are a lot of ways to crack the Hashes, this Hashes are LM or NT (or NTLM) and can be cracked with:
 
-> Online Hash Cracking
+- Online Hash Cracking
 
-or
+- Ophcrack (Specialized in windows password cracking)
 
-> Hash Cracking on your PC
+- John the Ripper
+
+- Hashcat
