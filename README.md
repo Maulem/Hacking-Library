@@ -755,10 +755,10 @@ The NT Hash (or NTLM in some cracking websites) is newer and more difficult to c
 
 There are a lot of ways to crack the Hashes, this Hashes are LM or NT (or NTLM) and can be cracked with:
 
-- Online Hash Cracking
+- [Online Hash Cracking](#websites-for-crashing-hashs)
 
-- Ophcrack (Specialized in windows password cracking)
+- [Ophcrack (Specialized in windows password cracking)](#ophcrack)
 
-- John the Ripper
+- [John the Ripper](#john-the-ripper)
 
-- Hashcat
+- [Hashcat](#hashcat)
