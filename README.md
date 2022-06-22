@@ -687,6 +687,60 @@ sudo apt install hydra
 
 ## Burp Suite
 
-## SAM Cracking
 
-Windows password cracking
+
+## Windows local password cracking
+
+Cracking a Windows password is a three-step process:
+
+1. Acquiring the crypted password files
+2. Uncrypting them
+3. Cracking the Hashes
+
+As an overview the method presented here starts by getting the files that hold the passwords hashes encrypted, then uncrypt them with Samdump2 getting the Hashes, and finally trying ways to crack this Hashes.
+
+#### Getting SAM and SYSTEM files
+
+Windows password hashes are stored in the SAM (Security Accounts Manager) file, however, they are encrypted with the system boot key, which is stored in the SYSTEM file. If we get access to both of these files, then the SYSTEM file can be used to decrypt the password hashes stored in the SAM file. 
+
+They are in this directory: windows/system32/config . Unfornately this directory isn't accessible when Windows is running, so to get them you need to use some commands:
+
+> reg save hklm\sam c:\sam
+
+> reg save hklm\system c:\system
+
+#### Getting password hashes with Samdump2
+
+After you have both files we run Samdump2 to decrypt and get the Hashes.
+
+```console
+samdump2 -o {OUTPUT_FILE} {SYSTEM_FILE} {SAM_FILE}
+```
+
+Example:
+
+```console
+samdump2 -o hashes.txt SYSTEM SAM
+```
+
+The hashes you will get will be in this format:
+
+> {USER}:{USER_NUM_IDENTIFIER}:LM_HASH:NT_HASH:::
+
+For example:
+
+> Maulem:1004:aad3b435b51404eeaad3b435b51404ee:7a21990fcd3d759941e45c490f143d5f:::
+
+The LM Hash is older and easier to crack but sometimes (like this example) its value is an empty string which means we cannot use it to get the password.
+
+The NT Hash (or NTLM in some cracking websites) is newer and more difficult to crash, but if cracking the LM didn't work this hash is the way.
+
+#### Cracking the Hashes
+
+There are a lot of ways to crack the Hashes, this Hashes are LM or NT (or NTLM) and can be cracked with:
+
+> Online Hash Cracking
+
+or
+
+> Hash Cracking on your PC
