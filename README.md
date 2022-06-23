@@ -76,7 +76,21 @@ sudo apt install steghide
 
 ## Ophcrack
 
-Password cracker designed for all operating systems that specializes in Windows password cracking
+Password cracker designed for all operating systems that specializes in Windows password cracking. It works by using rainbow tables to try to crack the password.
+
+After downloaded only open the program, add the LM/NT Hashes, add the rainbow tables that you have downloaded and click in start.
+
+Not always it will find the key, but its certainly faster than other methods.
+
+#### How to install
+
+Download the program here:
+
+https://ophcrack.sourceforge.io/
+
+And download rainbow tables here:
+
+https://ophcrack.sourceforge.io/tables.php 
 
 ## John the Ripper
 
@@ -741,7 +755,7 @@ samdump2 -o hashes.txt SYSTEM SAM
 
 The hashes you will get will be in this format:
 
-> {USER}:{USER_NUM_IDENTIFIER}:LM_HASH:NT_HASH:::
+> {USER}:{USER_ID}:LM_HASH:NT_HASH:::
 
 For example:
 
