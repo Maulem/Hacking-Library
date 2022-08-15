@@ -64,7 +64,9 @@ steghide extract -sf image.jpg
 
 #### How to install
 
+```console
 sudo apt install steghide
+```
 
 # Hash Cracking
 
@@ -776,3 +778,22 @@ There are a lot of ways to crack the Hashes, this Hashes are LM or NT (or NTLM) 
 - [John the Ripper](#john-the-ripper)
 
 - [Hashcat](#hashcat)
+
+## WI-fi password cracking
+
+Basically the process to crack wi-fi passwords consists in two parts, first you need to capture the wi-fi handshake from a device that has the password and then you need to crack the hash provenient from the handshake.
+
+In this guide we will use Airmon tools to capture the Handshake and then there are a lot of tools for cracking the hashes.
+
+#### Setting up Wlan interfaces
+
+For this to work you need a Wlan interface to capture the Handshake, that means that if your PC only get internet through cable this won't work.
+
+To show your interfaces use this command:
+
+```console
+iwconfig
+```
+
+![Wlan Interfaces Image](/img/Wlan%20Interfaces.png)
+
